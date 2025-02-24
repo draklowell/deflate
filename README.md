@@ -43,6 +43,8 @@ Usage of ./deflate:
         maximal block size in symbols that is encoded using static huffman trees (default 256)
 ```
 
+**Note:** Uncompressed blocks are not supported and an attempt to decode them will raise an error.
+
 ## Compression tools comparison
 
 | Set | Zopfli | ZLIB | Deflate |
@@ -67,9 +69,10 @@ There were no time-measuring tests taken because this implementation is far (rea
 
 #### TL;DR
 Areas for improving:
-- Hash chains instead of brute force in LZ77;
-- Bit buffering;
-- Package-merge algorithm optimization.
+- Use hash chains instead of brute force in LZ77;
+- Add bit buffering;
+- Optimize package-merge algorithm;
+- Add uncompressed blocks support.
 
 #### Details
 
