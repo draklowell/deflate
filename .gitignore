@@ -2,3 +2,5 @@
 /deflate
 /.vscode
 /build
+/.venv
+__pycache__

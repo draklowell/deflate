@@ -3,6 +3,7 @@ import subprocess
 import zlib
 
 import pandas as pd
+import tqdm
 
 
 def zopfli_compress(sample_set: str) -> int:
@@ -50,23 +51,30 @@ def deflate_compress(sample_set: str) -> int:
 
 if __name__ == "__main__":
     sets = [
+        "README.md",
         "alice29.txt",
+        "alphabet.txt",
+        "asyoulik.txt",
         "cp.html",
+        "fields.c",
         "grammar.lsp",
         "helloworld.txt",
+        "random.txt",
+        "sum",
+        "xargs.1",
     ]
 
     data = []
-    for sample_set in sets:
+    for sample_set in tqdm.tqdm(sets):
         path = f"examples/{sample_set}"
         size_before = os.path.getsize(path)
 
         row = [sample_set]
         for compress in [zopfli_compress, zlib_compress, deflate_compress]:
             size_after = compress(sample_set)
-            row.append(size_after / size_before)
+            row.append(f"{size_after / size_before * 100:.1f}%")
 
         data.append(row)
 
-    df = pd.DataFrame(data, columns=["Set", "Zopfli", "ZLIB", "This"])
+    df = pd.DataFrame(data, columns=["Set", "Zopfli", "ZLIB", "Deflate"])
     df.to_csv("tests.csv", index=False)
